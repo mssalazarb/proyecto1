@@ -1,10 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+        GITHUB_EVENT = sh(script: 'echo $GITHUB_EVENT', returnStdout: true).trim()
+    }
+
     stages {
         stage('Checkout') {
             when {
-                branch 'master'
+                expression { env.GITHUB_EVENT == 'push' }
             }
             steps {
                 deleteDir()
@@ -14,7 +18,7 @@ pipeline {
 
         stage('Build') {
             when {
-                branch 'master'
+                expression { env.GITHUB_EVENT == 'push' }
             }
             steps {
                 sh 'mvn clean install'
@@ -23,7 +27,7 @@ pipeline {
 
         stage('Test') {
             when {
-                branch 'master'
+                expression { env.GITHUB_EVENT == 'push' }
             }
             steps {
                 sh 'mvn test'
