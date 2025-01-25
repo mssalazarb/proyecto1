@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    triggers {
-        gitPush(branches: 'master')
-    }
-
     stages {
         stage('Checkout') {
             steps {
