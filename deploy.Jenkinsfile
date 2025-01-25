@@ -11,7 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                    sh "sudo docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
                 script {
                     sh "echo ${DOCKERHUB_CREDENTIALS} | docker login -u mssalazarb --password-stdin"
 
-                    sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    sh "sudo docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
     post {
         always {
             script {
-                sh "docker logout"
+                sh "sudo docker logout"
             }
         }
     }
